@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="radius_elevation">2dp</dimen>
+    <dimen name="title">12sp</dimen>
+    <dimen name="author">8sp</dimen>
+</resources>
