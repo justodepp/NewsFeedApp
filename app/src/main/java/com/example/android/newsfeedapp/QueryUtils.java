@@ -73,8 +73,6 @@ public final class QueryUtils {
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
-            // If the request was successful (response code 200),
-            // then read the input stream and parse the response.
             if (urlConnection.getResponseCode() == 200) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
@@ -88,9 +86,6 @@ public final class QueryUtils {
                 urlConnection.disconnect();
             }
             if (inputStream != null) {
-                // Closing the input stream could throw an IOException, which is why
-                // the makeHttpRequest(URL url) method signature specifies than an IOException
-                // could be thrown.
                 inputStream.close();
             }
         }
@@ -122,17 +117,11 @@ public final class QueryUtils {
      */
     @Nullable
     private static List<News> extractFeatureFromJson(String newsJSON) {
-        // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(newsJSON)) {
             return null;
         }
 
-        // Create an empty ArrayList that we can start adding news to
         List<News> newses = new ArrayList<>();
-
-        // Try to parse the JSON response string. If there's a problem with the way the JSON
-        // is formatted, a JSONException exception object will be thrown.
-        // Catch the exception so the app doesn't crash, and print the error message to the logs.
         try {
 
             // Create a JSONObject from the JSON response string
@@ -141,17 +130,10 @@ public final class QueryUtils {
             if (baseJsonResponse.has("response")) {
                 JSONObject responseObj = baseJsonResponse.getJSONObject("response");
                 if (responseObj.has("results")) {
-                    // Extract the JSONArray associated with the key called "results",
-                    // which represents a list of news.
                     JSONArray newsArray = responseObj.getJSONArray("results");
-
-                    // For each news in the newsArray, create an {@link News} object
                     for (int i = 0; i < newsArray.length(); i++) {
-
-                        // Get a single news at position i within the list of news
                         JSONObject currentNews = newsArray.getJSONObject(i);
 
-                        // Extract the value for the key called "sectionName"
                         String sectionName;
                         if(currentNews.has("sectionName")){
                             sectionName = currentNews.getString("sectionName");
@@ -159,7 +141,6 @@ public final class QueryUtils {
                             sectionName = "No section name";
                         }
 
-                        // Extract the value for the key called "webPublicationDate"
                         String webDate;
                         if(currentNews.has("webPublicationDate")){
                             webDate = currentNews.getString("webPublicationDate");
@@ -167,7 +148,6 @@ public final class QueryUtils {
                             webDate = "No publication date";
                         }
 
-                        // Extract the value for the key called "webTitle"
                         String webTitle;
                         if(currentNews.has("webTitle")){
                             webTitle = currentNews.getString("webTitle");
@@ -175,7 +155,6 @@ public final class QueryUtils {
                             webTitle = "No title";
                         }
 
-                        // Extract the value for the key called "webUrl"
                         String webUrl;
                         if(currentNews.has("webUrl")){
                             webUrl = currentNews.getString("webUrl");
@@ -206,7 +185,6 @@ public final class QueryUtils {
                         JSONObject imageLinks;
                         String imgUrl;
                         if(currentNews.has("fields")){
-                            //Extract the imageLinks JSONObject
                             imageLinks = currentNews.getJSONObject("thumbnail");
                             if(imageLinks.has("thumbnail"))
                                 imgUrl = imageLinks.getString("thumbnail");
@@ -215,25 +193,15 @@ public final class QueryUtils {
                         } else {
                             imgUrl = "No image";
                         }
-
-                        // Create a new {@link News} object with the info,
-                        // and url from the JSON response.
                         News news = new News(imgUrl, webTitle, author, sectionName, webDate, webUrl);
-
-                        // Add the new {@link News} to the list of news.
                         newses.add(news);
                     }
                 }
             }
 
         } catch (JSONException e) {
-            // If an error is thrown when executing any of the above statements in the "try" block,
-            // catch the exception here, so the app doesn't crash. Print a log message
-            // with the message from the exception.
             Log.e("QueryUtils", "Problem parsing the news JSON results", e);
         }
-
-        // Return the list of news
         return newses;
     }
 

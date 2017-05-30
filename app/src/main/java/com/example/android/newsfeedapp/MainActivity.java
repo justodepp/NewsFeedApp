@@ -114,13 +114,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoadFinished(Loader<List<News>> loader, List<News> data) {
+    public void onLoadFinished(Loader<List<News>> loader, List<News> news) {
+        mEmptyStateTextView.setVisibility(View.VISIBLE);
+        // Set empty state text to display "No book found."
+        mEmptyStateTextView.setText("Nothing to show");
 
+        mAdapter.clear();
+        if (news != null && !news.isEmpty()) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyStateTextView.setVisibility(View.GONE);
+            mAdapter.addAll(news);
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<List<News>> loader) {
-
+        mAdapter.clear();
     }
 
     @Override
