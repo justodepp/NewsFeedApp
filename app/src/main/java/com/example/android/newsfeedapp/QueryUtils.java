@@ -184,18 +184,22 @@ public final class QueryUtils {
                         }
 
                         JSONArray authorsArray;
-                        ArrayList<String> authors = new ArrayList<String>();
-
-                        if (currentNews.has("references")) {
-                            authorsArray = currentNews.getJSONArray("authors");
+                        String author = "";
+                        String firstname = "";
+                        String secondname = "";
+                        if (currentNews.has("tags")) {
+                            authorsArray = currentNews.getJSONArray("tags");
                             if(authorsArray.length() != 0)
                                 for (int j = 0; j < authorsArray.length(); j++) {
-                                    authors.add(authorsArray.getString(j));
+                                    JSONObject nameObject = authorsArray.getJSONObject(j);
+                                    firstname = nameObject.getString("firstname");
+                                    secondname = nameObject.getString("secondname");
+                                    author = firstname +" "+ secondname;
                                 }
                             else
-                                authors.add("Uknown Author");
+                                author = "Uknown Author";
                         } else {
-                            authors.add("Uknown Author");
+                            author = "Uknown Author";
                         }
 
                         // Extract the value for the key called "imgUrl"
@@ -214,7 +218,7 @@ public final class QueryUtils {
 
                         // Create a new {@link News} object with the info,
                         // and url from the JSON response.
-                        News news = new News(imgUrl, webTitle, authors, sectionName, webDate, webUrl);
+                        News news = new News(imgUrl, webTitle, author, sectionName, webDate, webUrl);
 
                         // Add the new {@link News} to the list of news.
                         newses.add(news);

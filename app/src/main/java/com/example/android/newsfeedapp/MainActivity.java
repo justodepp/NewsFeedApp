@@ -19,18 +19,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.view.View.GONE;
-
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>>, SwipeRefreshLayout.OnRefreshListener {
 
     /**
      * URL for book data from the GUARDIAN NEWS dataset
      */
-    private final String URL = "http://content.guardianapis.com/search?q=android";
-    private final String URL_CONTENT = "&show-fields=thumbnail&show-references=author";
-    private final String URL_KEY = "&api-key=test";
+    private static final String URL = "http://content.guardianapis.com/search?q=android";
+    private static final String URL_CONTENT = "&show-fields=thumbnail&show-tags=contributor";
+    private static final String URL_KEY = "&api-key=test";
 
-    private static int NEWS_LOADER_ID = 1;
+    private static int NEWS_LOADER_ID = 0;
 
     private NewsAdapter mAdapter;
     private RecyclerView mRecyclerView;
@@ -114,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<List<News>> onCreateLoader(int id, Bundle args) {
         mLoadingIndicator.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(GONE);
+        mRecyclerView.setVisibility(View.GONE);
 
         String query = URL + URL_CONTENT + URL_KEY;
 
