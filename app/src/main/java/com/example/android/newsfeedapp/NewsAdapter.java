@@ -44,7 +44,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         holder.newsSectionTextView.setText(news.getSection());
 
         //Picasso Library to convert the url from JSONObject imageLinks to a image(@thumbnail)
-        Picasso.with(mContext).load(news.getImage()).into(holder.newsImageView);
+        Picasso.with(mContext).load(news.getImage()).placeholder(R.mipmap.ic_launcher).into(holder.newsImageView);
 
         holder.bind(mNews.get(position), mListener);
     }
