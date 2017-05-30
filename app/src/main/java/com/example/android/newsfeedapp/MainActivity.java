@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      * TextView that is displayed when the list is empty
      */
     private TextView mEmptyStateTextView;
-    private ProgressBar mLoadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +58,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
-        // First, hide loading indicator so error message will be visible
-        mLoadingIndicator.setVisibility(View.GONE);
-
 
         // Create a new adapter that takes an empty list of book as input
         mAdapter = new NewsAdapter(this, new ArrayList<News>(), new NewsAdapter.OnItemClickListener() {
@@ -99,8 +93,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         } else {
             // Otherwise, display error
             // First, hide loading indicator so error message will be visible
-            mLoadingIndicator.setVisibility(View.GONE);
-
             mRecyclerView.setVisibility(View.GONE);
             mEmptyStateTextView.setVisibility(View.VISIBLE);
 
@@ -111,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<News>> onCreateLoader(int id, Bundle args) {
-        mLoadingIndicator.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
 
         String query = URL + URL_CONTENT + URL_KEY;
