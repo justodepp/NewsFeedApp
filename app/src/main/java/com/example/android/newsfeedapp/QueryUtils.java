@@ -138,74 +138,87 @@ public final class QueryUtils {
             // Create a JSONObject from the JSON response string
             JSONObject baseJsonResponse = new JSONObject(newsJSON);
 
-            if (baseJsonResponse.has("items")) {
-                // Extract the JSONArray associated with the key called "items",
-                // which represents a list of news.
-                JSONArray newsArray = baseJsonResponse.getJSONArray("items");
+            if (baseJsonResponse.has("response")) {
+                JSONObject responseObj = baseJsonResponse.getJSONObject("response");
+                if (responseObj.has("results")) {
+                    // Extract the JSONArray associated with the key called "results",
+                    // which represents a list of news.
+                    JSONArray newsArray = responseObj.getJSONArray("results");
 
-                // For each news in the newsArray, create an {@link News} object
-                for (int i = 0; i < newsArray.length(); i++) {
+                    // For each news in the newsArray, create an {@link News} object
+                    for (int i = 0; i < newsArray.length(); i++) {
 
-                    // Get a single news at position i within the list of news
-                    JSONObject currentNews = newsArray.getJSONObject(i);
+                        // Get a single news at position i within the list of news
+                        JSONObject currentNews = newsArray.getJSONObject(i);
 
-                    // For a given news, extract the JSONObject associated with the
-                    // key called "properties", which represents a list of all properties
-                    // for that news.
-                    JSONObject volumeInfo = currentNews.getJSONObject("volumeInfo");
-
-                    //Extract the imageLinks JSONObject
-                    JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-                    String thumbnail;
-                    if (imageLinks.has("thumbnail")) {
-                        //Extract the url of the smallThumbnail
-                        thumbnail = imageLinks.getString("thumbnail");
-                    } else {
-                        thumbnail = "No Image";
-                    }
-
-                    // Extract the value for the key called "title"
-                    String title;
-                    if (volumeInfo.has("title")) {
-                        title = volumeInfo.getString("title");
-                    } else {
-                        title = "No Title";
-                    }
-
-                    JSONArray authorsArray;
-                    ArrayList<String> authors = new ArrayList<String>();
-
-                    if (volumeInfo.has("authors")) {
-                        authorsArray = volumeInfo.getJSONArray("authors");
-                        for (int j = 0; j < authorsArray.length(); j++) {
-                            authors.add(authorsArray.getString(j));
+                        // Extract the value for the key called "sectionName"
+                        String sectionName;
+                        if(currentNews.has("sectionName")){
+                            sectionName = currentNews.getString("sectionName");
+                        } else {
+                            sectionName = "No section name";
                         }
-                    } else {
-                        authors.add("Uknown Author");
+
+                        // Extract the value for the key called "webPublicationDate"
+                        String webDate;
+                        if(currentNews.has("webPublicationDate")){
+                            webDate = currentNews.getString("webPublicationDate");
+                        } else {
+                            webDate = "No publication date";
+                        }
+
+                        // Extract the value for the key called "webTitle"
+                        String webTitle;
+                        if(currentNews.has("webTitle")){
+                            webTitle = currentNews.getString("webTitle");
+                        } else {
+                            webTitle = "No title";
+                        }
+
+                        // Extract the value for the key called "webUrl"
+                        String webUrl;
+                        if(currentNews.has("webUrl")){
+                            webUrl = currentNews.getString("webUrl");
+                        } else {
+                            webUrl = "No news link";
+                        }
+
+                        JSONArray authorsArray;
+                        ArrayList<String> authors = new ArrayList<String>();
+
+                        if (currentNews.has("references")) {
+                            authorsArray = currentNews.getJSONArray("authors");
+                            if(authorsArray.length() != 0)
+                                for (int j = 0; j < authorsArray.length(); j++) {
+                                    authors.add(authorsArray.getString(j));
+                                }
+                            else
+                                authors.add("Uknown Author");
+                        } else {
+                            authors.add("Uknown Author");
+                        }
+
+                        // Extract the value for the key called "imgUrl"
+                        JSONObject imageLinks;
+                        String imgUrl;
+                        if(currentNews.has("fields")){
+                            //Extract the imageLinks JSONObject
+                            imageLinks = currentNews.getJSONObject("thumbnail");
+                            if(imageLinks.has("thumbnail"))
+                                imgUrl = imageLinks.getString("thumbnail");
+                            else
+                                imgUrl = "No image";
+                        } else {
+                            imgUrl = "No image";
+                        }
+
+                        // Create a new {@link News} object with the info,
+                        // and url from the JSON response.
+                        News news = new News(imgUrl, webTitle, authors, sectionName, webDate, webUrl);
+
+                        // Add the new {@link News} to the list of news.
+                        newses.add(news);
                     }
-
-                    // Extract the value for the key called "publisher"
-                    String publisher;
-                    if (volumeInfo.has("publisher")) {
-                        publisher = volumeInfo.getString("publisher");
-                    } else {
-                        publisher = "No Publisher";
-                    }
-
-                    // Extract the value for the key called "publisher"
-                    String infoLink;
-                    if (volumeInfo.has("infoLink")) {
-                        infoLink = volumeInfo.getString("infoLink");
-                    } else {
-                        infoLink = "No info link";
-                    }
-
-                    // Create a new {@link News} object with the info,
-                    // and url from the JSON response.
-                    News news = new News();
-
-                    // Add the new {@link News} to the list of news.
-                    newses.add(news);
                 }
             }
 
@@ -221,7 +234,7 @@ public final class QueryUtils {
     }
 
     /**
-     * Query the Google News dataset and return a list of {@link News} objects.
+     * Query the Guardian News dataset and return a list of {@link News} objects.
      */
     public static List<News> fetchNewsData(String requestUrl) {
         // Create URL object
