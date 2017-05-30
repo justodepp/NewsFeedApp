@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -165,15 +164,20 @@ public final class QueryUtils {
 
                         JSONArray authorsArray;
                         String author = "";
-                        String firstName = "";
-                        String secondName = "";
+                        String firstName, secondName;
                         if (currentNews.has("tags")) {
                             authorsArray = currentNews.getJSONArray("tags");
                             if(authorsArray.length() != 0)
                                 for (int j = 0; j < authorsArray.length(); j++) {
                                     JSONObject nameObject = authorsArray.getJSONObject(j);
-                                    firstName = nameObject.getString("firstName");
-                                    secondName = nameObject.getString("secondName");
+                                    if (nameObject.has("firstName"))
+                                        firstName = nameObject.getString("firstName");
+                                    else
+                                        firstName = "";
+                                    if (nameObject.has("secondName"))
+                                        secondName = nameObject.getString("secondName");
+                                    else
+                                        secondName = "";
                                     author = firstName +" "+ secondName;
                                 }
                             else
@@ -189,11 +193,9 @@ public final class QueryUtils {
                             imageLinks = currentNews.getJSONObject("thumbnail");
                             if(imageLinks.has("thumbnail"))
                                 imgUrl = imageLinks.getString("thumbnail");
-                            else
-                                imgUrl = "No image";
-                        } else {
-                            imgUrl = "No image";
-                        }
+                            else imgUrl = "No image";
+                        } else imgUrl = "No image";
+
                         News news = new News(imgUrl, webTitle, author, sectionName, webDate, webUrl);
                         newses.add(news);
                     }
@@ -221,10 +223,7 @@ public final class QueryUtils {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
-        // Extract relevant fields from the JSON response and create a list of {@link News}s
-        List<News> news = extractFeatureFromJson(jsonResponse);
-
         // Return the list of {@link News}s
-        return news;
+        return extractFeatureFromJson(jsonResponse);
     }
 }

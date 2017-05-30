@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     /**
      * URL for book data from the GUARDIAN NEWS dataset
      */
-    private static final String URL = "http://content.guardianapis.com/search?q=android";
+    private static final String URL = "http://content.guardianapis.com/search?q=apple";
     private static final String URL_CONTENT = "&show-fields=thumbnail&show-tags=contributor";
     private static final String URL_KEY = "&api-key=test";
 

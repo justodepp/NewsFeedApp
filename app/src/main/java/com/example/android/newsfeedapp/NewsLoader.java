@@ -7,10 +7,6 @@ import android.os.Build;
 
 import java.util.List;
 
-/**
- * Created by justo on 27/05/17.
- */
-
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class NewsLoader extends AsyncTaskLoader<List<News>> {
 
@@ -33,7 +29,6 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
         }
 
         // Perform the network request, parse the response, and extract a list of news.
-        List<News> news = QueryUtils.fetchNewsData(mUrl);
-        return news;
+        return QueryUtils.fetchNewsData(mUrl);
     }
 }

@@ -1,7 +1,5 @@
 package com.example.android.newsfeedapp;
 
-import java.util.ArrayList;
-
 public class News {
 
     private String mImage;
@@ -14,7 +12,6 @@ public class News {
 
     private String mDate;
 
-    /** Website URL of the earthquake */
     private String mUrl;
 
     public News(String image, String title, String author, String section, String date, String url){
