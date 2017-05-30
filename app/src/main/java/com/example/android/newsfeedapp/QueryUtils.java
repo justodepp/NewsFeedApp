@@ -131,6 +131,7 @@ public final class QueryUtils {
                 JSONObject responseObj = baseJsonResponse.getJSONObject("response");
                 if (responseObj.has("results")) {
                     JSONArray newsArray = responseObj.getJSONArray("results");
+                    //Log.i(LOG_TAG, );
                     for (int i = 0; i < newsArray.length(); i++) {
                         JSONObject currentNews = newsArray.getJSONObject(i);
 
