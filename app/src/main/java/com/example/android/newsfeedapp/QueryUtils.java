@@ -185,16 +185,16 @@ public final class QueryUtils {
 
                         JSONArray authorsArray;
                         String author = "";
-                        String firstname = "";
-                        String secondname = "";
+                        String firstName = "";
+                        String secondName = "";
                         if (currentNews.has("tags")) {
                             authorsArray = currentNews.getJSONArray("tags");
                             if(authorsArray.length() != 0)
                                 for (int j = 0; j < authorsArray.length(); j++) {
                                     JSONObject nameObject = authorsArray.getJSONObject(j);
-                                    firstname = nameObject.getString("firstname");
-                                    secondname = nameObject.getString("secondname");
-                                    author = firstname +" "+ secondname;
+                                    firstName = nameObject.getString("firstName");
+                                    secondName = nameObject.getString("secondName");
+                                    author = firstName +" "+ secondName;
                                 }
                             else
                                 author = "Uknown Author";
