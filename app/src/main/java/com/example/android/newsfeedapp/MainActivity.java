@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     /**
      * URL for book data from the GUARDIAN NEWS dataset
      */
-    private static final String URL = "http://content.guardianapis.com/search?q=android";
+    private static final String URL = "http://content.guardianapis.com/search?q=";
     private static final String URL_CONTENT = "&show-fields=thumbnail&show-tags=contributor";
     private static final String URL_KEY = "&api-key=test";
 
@@ -31,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private NewsAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
     SwipeRefreshLayout swipe;
 
     @Override
@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         mRecyclerView = (RecyclerView) findViewById(R.id.list_view);
         mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
