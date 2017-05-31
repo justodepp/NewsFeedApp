@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     /**
      * URL for book data from the GUARDIAN NEWS dataset
      */
-    private static final String URL = "http://content.guardianapis.com/search?q=apple";
+    private static final String URL = "http://content.guardianapis.com/search?q=android";
     private static final String URL_CONTENT = "&show-fields=thumbnail&show-tags=contributor";
     private static final String URL_KEY = "&api-key=test";
 
@@ -32,11 +32,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private NewsAdapter mAdapter;
     private RecyclerView mRecyclerView;
     SwipeRefreshLayout swipe;
-
-    /**
-     * TextView that is displayed when the list is empty
-     */
-    private TextView mEmptyStateTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +46,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
 
         mAdapter = new NewsAdapter(this, new ArrayList<News>(), new NewsAdapter.OnItemClickListener() {
             @Override
@@ -77,9 +70,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             loaderManager.initLoader(NEWS_LOADER_ID, null, MainActivity.this);
         } else {
             mRecyclerView.setVisibility(View.GONE);
-            mEmptyStateTextView.setVisibility(View.VISIBLE);
-
-            mEmptyStateTextView.setText(R.string.no_internet_connection);
         }
     }
 
@@ -97,14 +87,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> news) {
-        mEmptyStateTextView.setVisibility(View.VISIBLE);
-        mEmptyStateTextView.setText("Nothing to show");
 
         swipe.setRefreshing(false);
         mAdapter.clear();
         if (news != null && !news.isEmpty()) {
             mRecyclerView.setVisibility(View.VISIBLE);
-            mEmptyStateTextView.setVisibility(View.GONE);
             mAdapter.addAll(news);
         }
     }

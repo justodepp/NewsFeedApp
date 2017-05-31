@@ -22,6 +22,14 @@
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>
 
+    <style name="CardImageView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">160dp</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
     <style name="style_recycler">
         <item name="android:orientation">vertical</item>
         <item name="android:layout_width">match_parent</item>
