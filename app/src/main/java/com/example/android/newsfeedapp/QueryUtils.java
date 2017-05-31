@@ -190,7 +190,7 @@ public final class QueryUtils {
                         JSONObject imageLinks;
                         String imgUrl;
                         if(currentNews.has("fields")){
-                            imageLinks = currentNews.getJSONObject("thumbnail");
+                            imageLinks = currentNews.getJSONObject("fields");
                             if(imageLinks.has("thumbnail"))
                                 imgUrl = imageLinks.getString("thumbnail");
                             else imgUrl = "No image";
