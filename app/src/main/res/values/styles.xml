@@ -40,7 +40,6 @@
     <style name="text_news_info" parent="std_layout">
         <item name="android:layout_margin">8dp</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_weight">0</item>
         <item name="android:orientation">vertical</item>
     </style>
 
