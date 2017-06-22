@@ -21,6 +21,6 @@
 # Instructions
 
 You need an API key from The Guardian API. Go to the class `QueryUtils`, find the `createStringUrl()` method and replace the query parameter value "test" for your API key.  
-Otherwise you can use the api-key for test.
+  Otherwise you can use the test api-key.
 
 # Screenshot
